@@ -1,0 +1,50 @@
+rules:
+    predicate:
+        - identifier
+        - tautology
+        - contradiction
+        - not
+        - and
+        - or
+        - eq
+        - neq
+        - lt
+        - lte
+        - gt
+        - gte
+        - in
+    tautology:
+        - [ True ]
+    contradiction:
+        - [ False ]
+    identifier:
+        - [ name ]
+    not:
+        - [ predicate ]
+    and:
+        - [ predicate+ ]
+    or:
+        - [ predicate+ ]
+    eq:
+        - [ term, term ]
+    neq:
+        - [ term, term ]
+    lt:
+        - [ term, term ]
+    lte:
+        - [ term, term ]
+    gt:
+        - [ term, term ]
+    gte:
+        - [ term, term ]
+    in:
+        - [ var_ref, literal ]
+    term:
+        - var_ref
+        - literal
+    var_ref:
+        - identifier
+    literal:
+        - '~bool'
+    name:
+        !regexpr '[a-zA-Z0-9_]+'
