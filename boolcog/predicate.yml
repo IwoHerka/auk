@@ -14,9 +14,9 @@ rules:
         - gte
         - in
     tautology:
-        - [ True ]
+        - [ true ]
     contradiction:
-        - [ False ]
+        - [ false ]
     identifier:
         - [ name ]
     not:
@@ -45,6 +45,6 @@ rules:
     var_ref:
         - identifier
     literal:
-        - '~bool'
+        - '~object'
     name:
         !regexpr '[a-zA-Z0-9_]+'
