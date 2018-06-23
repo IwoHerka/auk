@@ -14,9 +14,9 @@ rules:
         - gte
         - in
     tautology:
-        - [ true ]
+        - [ ]
     contradiction:
-        - [ false ]
+        - [ ]
     identifier:
         - [ name ]
     not:
