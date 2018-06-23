@@ -14,6 +14,6 @@ install:
 before_script:
     - coverage erase
 script:
-    - coverage run --source=booldog pytest tests/__init__.py; tox
+    - coverage run --source=booldog -m pytest tests/__init__.py; tox
 after_success:
     - COVERALLS_REPO_TOKEN=Me4RKkNYVHz7P9yNFpAn8Pj7HUf9c1pi6 coveralls
