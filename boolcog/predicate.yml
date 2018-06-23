@@ -13,6 +13,8 @@ rules:
         - gt
         - gte
         - in
+        - literal
+        - callable
     tautology:
         - [ ]
     contradiction:
@@ -38,7 +40,9 @@ rules:
     gte:
         - [ term, term ]
     in:
-        - [ var_ref, literal ]
+        - [ term, term ]
+    callable:
+        - [ '=object' ]
     term:
         - var_ref
         - literal

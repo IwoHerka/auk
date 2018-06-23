@@ -46,3 +46,6 @@ def compile_and(*values):
 
 def compile_or(*values):
     return ast.BoolOp(op = ast.Or(), values = list(values))
+
+def compile_callable(func):
+    return ast.Call(func = func, args = [], keywords = [])
