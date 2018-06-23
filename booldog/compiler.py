@@ -13,6 +13,19 @@ grammar = sexpr.load(file_path)
 tags = grammar.rules.keys()
 
 
+def read_argnames(sexp):
+    names = set()
+
+    if isinstance(sexp, list) and sexp and sexp[0] in tags:
+        if sexp[0] == 'identifier':
+            return set([sexp[1]])
+        else:
+            for child in sexp[1:]:
+                names = names.union(read_argnames(child))
+
+    return names
+
+
 def compile_sexpr(sexp, scope = None):
     scope = scope or {}
     args = []
@@ -83,12 +96,12 @@ def compile_terminal(sexp, scope):
         return ast.Name(id = name, ctx = ast.Load()), scope
 
 
-def compile_predicate(sexp, argnames = None, funcname = None):
+def compile_predicate(sexp, funcname = None):
     if not grammar.matches(sexp):
         return None
 
     funcname = funcname or 'foo'
-    argnames = argnames or []
+    argnames = read_argnames(sexp)
     scope = {}
     exp, scope = compile_sexpr(sexp, scope)
     arg_list = [ast.arg(arg = name, annotation = None) for name in argnames]

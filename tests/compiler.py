@@ -46,43 +46,43 @@ def test_contradiction():
 def test_object_literals():
     obj = object()
     sexp = ['eq', ['identifier', 'foo'], obj]
-    func = compile_predicate(sexp, ['foo'])
+    func = compile_predicate(sexp)
     assert func(obj)
 
     foo = Foo()
     sexp = ['eq', ['identifier', 'bar'], foo]
-    func = compile_predicate(sexp, ['bar'])
+    func = compile_predicate(sexp)
     assert func(foo)
 
     obj = [1, 2, 3]
     sexp = ['eq', ['identifier', 'bar'], obj]
-    func = compile_predicate(sexp, ['bar'])
+    func = compile_predicate(sexp)
     assert func(obj)
 
     obj = [Foo(), Foo(), Foo()]
     sexp = ['eq', ['identifier', 'bar'], obj]
-    func = compile_predicate(sexp, ['bar'])
+    func = compile_predicate(sexp)
     assert func(obj)
 
     obj = set([1, 2, 3])
     sexp = ['eq', ['identifier', 'bar'], obj]
-    func = compile_predicate(sexp, ['bar'])
+    func = compile_predicate(sexp)
     assert func(obj)
 
     obj = dict(a = 1, b = 2, c = 3)
     sexp = ['eq', ['identifier', 'bar'], obj]
-    func = compile_predicate(sexp, ['bar'])
+    func = compile_predicate(sexp)
     assert func(obj)
 
     obj = (1, 2, 3)
     sexp = ['eq', ['identifier', 'bar'], obj]
-    func = compile_predicate(sexp, ['bar'])
+    func = compile_predicate(sexp)
     assert func(obj)
 
 
 def test_in():
     sexp = ['in', ['identifier', 'foo'], [1, 2, 3]]
-    func = compile_predicate(sexp, ['foo'])
+    func = compile_predicate(sexp)
     assert func(foo = 1)
     assert not func(4)
 
