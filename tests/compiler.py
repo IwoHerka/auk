@@ -1,7 +1,7 @@
 import ast
 import pytest
 
-from boolcog.compiler import *
+from booldog.compiler import *
 
 
 class Foo(object):
@@ -78,3 +78,29 @@ def test_object_literals():
     sexp = ['eq', ['identifier', 'bar'], obj]
     func = compile_predicate(sexp, ['bar'])
     assert func(obj)
+
+
+def test_in():
+    sexp = ['in', ['identifier', 'foo'], [1, 2, 3]]
+    func = compile_predicate(sexp, ['foo'])
+    assert func(foo = 1)
+    assert not func(4)
+
+    sexp = ['in', 1, [1, 2, 3]]
+    func = compile_predicate(sexp)
+    assert func()
+
+    foo = object()
+    sexp = ['in', foo, [foo, 2, 3]]
+    func = compile_predicate(sexp)
+    assert func()
+
+
+def test_func():
+    sexp = ['callable', lambda: True]
+    func = compile_predicate(sexp)
+    assert func()
+
+    sexp = lambda: False
+    func = compile_predicate(sexp)
+    assert func()
