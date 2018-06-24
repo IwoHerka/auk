@@ -42,7 +42,7 @@ rules:
     in:
         - [ term, term ]
     callable:
-        - [ '=object' ]
+        - [ '=FunctionType' ]
     term:
         - var_ref
         - literal
