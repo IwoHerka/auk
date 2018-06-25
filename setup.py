@@ -15,7 +15,7 @@ setup(
     author_email     = 'hi@iwoherka.eu',
 
     install_requires = [
-        'sexpr==0.1.2'
+        'sexpr'
     ],
 
     classifiers  = [
