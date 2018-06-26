@@ -29,7 +29,7 @@ def test_example_2():
             ]
         ]
 
-    func = compile_predicate(sexp, debug = True)
+    func = compile_predicate(sexp)
     assert func(P, Q) == (not P and not Q)
 
 def test_example_3():
@@ -41,7 +41,7 @@ def test_example_3():
             ['gte', ['identifier', 'num'], 2]
         ]
 
-    func = compile_predicate(sexp, debug = True)
+    func = compile_predicate(sexp)
     assert not func(1)
     assert func(2)
     assert func(3)
