@@ -11,8 +11,7 @@ from . import nodes
 cd = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
 grammar = sexpr.load(os.path.join(cd, 'predicate.yml'))
-tags    = grammar.rules.keys()
-rules   = grammar.yaml
+rules = grammar.yaml
 
 
 def read_argnames(sexp: List) -> Set[str]:
@@ -22,7 +21,7 @@ def read_argnames(sexp: List) -> Set[str]:
     '''
     names = set()
 
-    if isinstance(sexp, list) and sexp and sexp[0] in tags:
+    if isinstance(sexp, list) and sexp and sexp[0] in grammar.top_tags:
         if sexp[0] == 'identifier':
             return set([sexp[1]])
         else:
@@ -42,7 +41,7 @@ def compile_sexpr(sexp: List, closure: Optional[Dict] = None):
     closure = closure or {}
     args = []
 
-    if not (isinstance(sexp, list) and sexp and sexp[0] in tags):
+    if not (isinstance(sexp, list) and sexp and sexp[0] in grammar.top_tags):
         return compile_terminal(sexp, closure)
 
     tag = sexp[0]
