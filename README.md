@@ -1,8 +1,13 @@
+<img align="right" width="375" height="400" src="https://upload.wikimedia.org/wikipedia/commons/0/0f/Alca_impennisAMF064LB.png">
+
+## Auk
+
 [![Build Status](https://travis-ci.com/IwoHerka/auk.svg?branch=master)](https://travis-ci.com/IwoHerka/auk)
 [![Coverage Status](https://coveralls.io/repos/github/IwoHerka/auk/badge.svg?branch=master)](https://coveralls.io/github/IwoHerka/auk?branch=master)
 
 **auk** is a micro-package for compiling s-expressions into
 predicate functions.
+
 
 ```python
 sexp = \
@@ -16,6 +21,8 @@ sexp = \
 func = compile_predicate(sexp)
 assert func(P, Q) == (not P and not Q)
 ```
+
+<br>
 
 It provides a single function - ``compile_predicate``, accepting s-expression and returning Python's `FunctionType`.
 Above s-expression, for example, is compiled to the following AST (excluding boilerplate `ast.Module`, `lineno` and `col_offset`):
