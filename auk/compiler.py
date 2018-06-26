@@ -9,8 +9,10 @@ import sexpr
 from . import nodes
 
 cd = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+
 grammar = sexpr.load(os.path.join(cd, 'predicate.yml'))
-tags = grammar.rules.keys()
+tags    = grammar.rules.keys()
+rules   = grammar.yaml
 
 
 def read_argnames(sexp: List) -> Set[str]:
