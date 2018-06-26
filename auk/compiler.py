@@ -62,9 +62,9 @@ def compile_terminal(sexp: List, closure: Dict):
     Compiles primitive type variable (language built-in) to AST node.
 
     `closure` contains name bindings for target function.
-    Variables of non-primitive (built-in) types (without corresponding AST node)
-    are given a unique random name, converted to ast.Name and stored in closure
-    for the target function.
+    Variables of non-primitive (built-in) types (without corresponding
+    AST node) are given a unique random name, converted to ast.Name
+    and stored in closure for the target function.
     '''
     if type(sexp) is bool:
         return ast.NameConstant(value = sexp), closure
@@ -122,13 +122,13 @@ def compile_predicate(sexp: List, funcname: str = None) -> Union[FunctionType, L
     S-expression is validated by the grammar (`predicate.yml`) and,
     if ill-formed, `None` is returned.
 
-    By default, s-expressions with one or zero arguments are compiled to
-    lambdas and everything else to proper Python function. This is in order
-    to allow passing arguments via kwargs instead of regular args.
-    Although argument names are always read in a DFS manner, with complex
-    s-expressions, keeping track of the argument order is very cumbersome.
-    Compilation to either lambda or function can be forced with
-    `force_lambda` and `force_function`, respectively.
+    By default, s-expressions with one or zero arguments are compiled
+    to lambdas and everything else to proper Python function. This is
+    in order to allow passing arguments via kwargs instead of regular
+    args. Although argument names are always read in a DFS manner,
+    with complex s-expressions, keeping track of the argument order is
+    very cumbersome. Compilation to either lambda or function can be
+    forced with `force_lambda` and `force_function`, respectively.
 
     If compiling to function, `compile_predicate` can be provided with
     the name. If `funcname` is null, random UUID is generated.
