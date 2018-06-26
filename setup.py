@@ -14,6 +14,8 @@ setup(
     author           = 'Iwo Herka',
     author_email     = 'hi@iwoherka.eu',
 
+    include_package_data = True,
+    package_data = dict(booldog = ['predicate.yml']),
     install_requires = [
         'sexpr'
     ],
