@@ -3,6 +3,7 @@
 ## Auk
 
 [![Build Status](https://travis-ci.com/IwoHerka/auk.svg?branch=master)](https://travis-ci.com/IwoHerka/auk)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/7b8a7e7f2e5b4a748f34932ef112040a)](https://www.codacy.com/app/IwoHerka/auk?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=IwoHerka/auk&amp;utm_campaign=Badge_Grade)
 [![Coverage Status](https://coveralls.io/repos/github/IwoHerka/auk/badge.svg?branch=master)](https://coveralls.io/github/IwoHerka/auk?branch=master)
 
 **auk** is a micro-package for compiling s-expressions into
