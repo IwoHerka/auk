@@ -1,17 +1,15 @@
 import ast
 import os
 import uuid
-from typing import List, Set, Dict, Optional, Union
 from types import FunctionType, LambdaType
+from typing import Dict, List, Optional, Set, Union
 
 import sexpr
 
 from . import nodes
 
 cd = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
-file_path = os.path.join(cd, 'predicate.yml')
-
-grammar = sexpr.load(file_path)
+grammar = sexpr.load(os.path.join(cd, 'predicate.yml'))
 tags = grammar.rules.keys()
 
 
@@ -112,7 +110,7 @@ def compile_terminal(sexp: List, closure: Dict):
 
     else:
         # Generate random name and store variable in closure.
-        name = '_v%s' % uuid.uuid4().hex
+        name = '_%s' % uuid.uuid4().hex
         closure[name] = sexp
         return ast.Name(id = name, ctx = ast.Load()), closure
 
@@ -138,9 +136,9 @@ def compile_predicate(sexp: List, funcname: str = None) -> Union[FunctionType, L
     if not grammar.matches(sexp):
         return None
 
-    funcname = funcname or 'foo'
     argnames = read_argnames(sexp)
     exp, env = compile_sexpr(sexp, closure = {})
+    funcname = funcname or '_%s' % uuid.uuid4().hex
     arg_list = [ast.arg(arg = name, annotation = None) for name in argnames]
 
     func_def = ast.FunctionDef(
@@ -160,6 +158,5 @@ def compile_predicate(sexp: List, funcname: str = None) -> Union[FunctionType, L
 
     func_def = ast.fix_missing_locations(func_def)
     mod = ast.Module(body = [func_def])
-
     exec(compile(mod, '<string>', mode = 'exec'), env)
     return env[funcname]
