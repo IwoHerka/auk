@@ -96,7 +96,7 @@ def compile_terminal(sexp, scope):
         return ast.Name(id = name, ctx = ast.Load()), scope
 
 
-def compile_predicate(sexp, funcname = None):
+def compile_predicate(sexp, funcname = None, debug = False):
     if not grammar.matches(sexp):
         return None
 
@@ -123,5 +123,13 @@ def compile_predicate(sexp, funcname = None):
 
     func_def = ast.fix_missing_locations(func_def)
     mod = ast.Module(body = [func_def])
+
+    if debug:
+        try:
+            from astpretty import pprint
+            pprint(func_def, show_offsets = False)
+        except ImportError:
+            print('Cannot import astpretty')
+
     exec(compile(mod, '<string>', mode = 'exec'), scope)
     return scope[funcname]

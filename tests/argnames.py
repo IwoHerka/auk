@@ -1,4 +1,4 @@
-from booldog.compiler import read_argnames
+from auk.compiler import read_argnames
 
 def test_read_argnames():
     sexp = ['eq', ['identifier', 'bar'], True]

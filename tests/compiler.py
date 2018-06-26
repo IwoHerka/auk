@@ -1,7 +1,7 @@
 import ast
 import pytest
 
-from booldog.compiler import *
+from auk.compiler import *
 
 
 class Foo(object):

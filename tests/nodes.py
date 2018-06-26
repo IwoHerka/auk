@@ -1,6 +1,6 @@
 import ast
 
-from booldog.nodes import *
+from auk.nodes import *
 
 
 def test_compile_and():

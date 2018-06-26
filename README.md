@@ -1,7 +1,7 @@
-[![Build Status](https://travis-ci.com/IwoHerka/booldog.svg?branch=master)](https://travis-ci.com/IwoHerka/booldog)
-[![Coverage Status](https://coveralls.io/repos/github/IwoHerka/booldog/badge.svg?branch=master)](https://coveralls.io/github/IwoHerka/booldog?branch=master)
+[![Build Status](https://travis-ci.com/IwoHerka/auk.svg?branch=master)](https://travis-ci.com/IwoHerka/auk)
+[![Coverage Status](https://coveralls.io/repos/github/IwoHerka/auk/badge.svg?branch=master)](https://coveralls.io/github/IwoHerka/auk?branch=master)
 
-**booldog** is a micro-package for compiling s-expressions into
+**auk** is a micro-package for compiling s-expressions into
 predicate functions.
 
 ```python
