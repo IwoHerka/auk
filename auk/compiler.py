@@ -150,7 +150,11 @@ def define_lambda(name, args, body):
     )
 
 
-def compile_predicate(sexp: List, funcname: str = None) -> Union[FunctionType, LambdaType]:
+def compile_predicate(
+        sexp: List,
+        funcname: str = None,
+        force_func: bool = False,
+        force_lambda: bool = False) -> Union[FunctionType, LambdaType]:
     '''
     Compiles s-expression into predicate function.
 
@@ -185,10 +189,14 @@ def compile_predicate(sexp: List, funcname: str = None) -> Union[FunctionType, L
         defaults    = [],
     )
 
-    define   = define_func if len(argnames) > 1 else define_lambda
+    if force_func or not force_lambda and len(argnames) > 1:
+        define = define_func
+    else:
+        define = define_lambda
+
     func_def = define(funcname, args, exp)
     func_def = ast.fix_missing_locations(func_def)
-    mod      = ast.Module(body = [func_def])
+    module   = ast.Module(body = [func_def])
 
-    exec(compile(mod, '<string>', mode = 'exec'), env)
+    exec(compile(module, '<string>', mode = 'exec'), env)
     return env[funcname]

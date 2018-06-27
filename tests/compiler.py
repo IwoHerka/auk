@@ -1,5 +1,6 @@
 import ast
 import pytest
+from types import FunctionType, LambdaType
 
 from auk.compiler import *
 
@@ -27,6 +28,21 @@ def test_compile_terminal():
     scope = {}
     assert type(compile_terminal(Foo(), scope)[0]) is ast.Name
     assert scope
+
+
+def test_defaults():
+    sexp = ['tautology']
+    assert type(compile_predicate(sexp)) is LambdaType
+    sexp = ['eq', ['identifier', 'foo'], 1]
+    assert type(compile_predicate(sexp)) is LambdaType
+    sexp = ['eq', ['identifier', 'foo'], ['identifier', 'bar']]
+    assert type(compile_predicate(sexp)) is FunctionType
+
+
+def test_force():
+    sexp = ['tautology']
+    assert type(compile_predicate(sexp, force_func = True)) is FunctionType
+    assert type(compile_predicate(sexp, force_lambda = True)) is LambdaType
 
 
 def test_tautology():
