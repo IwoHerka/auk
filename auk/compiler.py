@@ -116,6 +116,31 @@ def compile_terminal(sexp: List, closure: Dict):
         return ast.Name(id = name, ctx = ast.Load()), closure
 
 
+def define_func(name, args, body):
+    return ast.FunctionDef(
+        name = name,
+        args = args,
+        body = [ast.Return(value = body)],
+        decorator_list = [],
+        returns = None,
+    )
+
+
+def define_lambda(name, args, body):
+    return ast.Assign(
+        targets = [
+            ast.Name(
+                id = name, 
+                ctx = ast.Store()
+            )
+        ],
+        value = ast.Lambda(
+            args = args,
+            body = body
+        )
+    )
+
+
 def compile_predicate(sexp: List, funcname: str = None) -> Union[FunctionType, LambdaType]:
     '''
     Compiles s-expression into predicate function.
@@ -140,24 +165,21 @@ def compile_predicate(sexp: List, funcname: str = None) -> Union[FunctionType, L
     argnames = read_argnames(sexp)
     exp, env = compile_sexpr(sexp, closure = {})
     funcname = funcname or '_%s' % uuid.uuid4().hex
-    arg_list = [ast.arg(arg = name, annotation = None) for name in argnames]
+    arglist  = [ast.arg(arg = name, annotation = None) for name in argnames]
 
-    func_def = ast.FunctionDef(
-        name = funcname,
-        args = ast.arguments(
-            args        = arg_list,
-            vararg      = None,
-            kwonlyargs  = [],
-            kw_defaults = [],
-            kwarg       = None,
-            defaults    = [],
-        ),
-        body = [ast.Return(value = exp)],
-        decorator_list = [],
-        returns = None,
+    args = ast.arguments(
+        args        = arglist,
+        vararg      = None,
+        kwonlyargs  = [],
+        kw_defaults = [],
+        kwarg       = None,
+        defaults    = [],
     )
 
+    define   = define_func if len(argnames) > 1 else define_lambda
+    func_def = define(funcname, args, exp)
     func_def = ast.fix_missing_locations(func_def)
-    mod = ast.Module(body = [func_def])
+    mod      = ast.Module(body = [func_def])
+
     exec(compile(mod, '<string>', mode = 'exec'), env)
     return env[funcname]
