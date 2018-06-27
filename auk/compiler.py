@@ -31,7 +31,7 @@ def read_argnames(sexp: List) -> Set[str]:
     return names
 
 
-def compile_sexpr(sexp: List, closure: Optional[Dict] = None):
+def compile_sexpr(sexp: List, closure: Optional[Dict] = None) -> ast.AST:
     '''
     Compiles s-expression into AST expresssion. For a list
     of possible types, check out `auk.nodes` module.
@@ -58,7 +58,7 @@ def compile_sexpr(sexp: List, closure: Optional[Dict] = None):
     return getattr(nodes, 'compile_%s' % tag)(*args), closure
 
 
-def compile_terminal(sexp: List, closure: Dict):
+def compile_terminal(sexp: List, closure: Dict) -> ast.AST:
     '''
     Compiles primitive type variable (language built-in) to AST node.
 
@@ -117,6 +117,9 @@ def compile_terminal(sexp: List, closure: Dict):
 
 
 def define_func(name, args, body):
+    '''
+    Construct AST function definition with specified name, args and body.
+    '''
     return ast.FunctionDef(
         name = name,
         args = args,
@@ -127,10 +130,16 @@ def define_func(name, args, body):
 
 
 def define_lambda(name, args, body):
+    '''
+    Construct AST lambda assignment with specified name, args and body.
+    Because lambdas are anonymous, we must assign them to some
+    variable in order to reference them. This variable is returned
+    to end-user.
+    '''
     return ast.Assign(
         targets = [
             ast.Name(
-                id = name, 
+                id = name,
                 ctx = ast.Store()
             )
         ],
