@@ -1,3 +1,13 @@
+'''
+    compiler
+    ~~~~~~~~
+
+    Core functionality of auk.
+    Public interface consists of `compile_predicate` and `read_argnames`.
+    The former takes an s-expression and compiles it into a function (or
+    lambda). The latter is included as a convienience, as compiling a list of
+    arguments for target function separetely is often handy.
+'''
 import ast
 import os
 import uuid
