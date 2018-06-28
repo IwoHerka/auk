@@ -9,7 +9,6 @@
 **auk** is a micro-package for compiling s-expressions into
 predicate functions.
 
-
 ```python
 sexp = \
     ['not',
@@ -23,10 +22,22 @@ func = compile_predicate(sexp)
 assert func(P, Q) == (not P and not Q)
 ```
 
-<br>
+### Interface
 
-It provides a single function - ``compile_predicate``, accepting s-expression and returning Python's `FunctionType`.
-Above s-expression, for example, is compiled to the following AST (excluding boilerplate `ast.Module`, `lineno` and `col_offset`):
+**auk**'s interface consists almost entirely of a single function -
+``compile_predicate``, which accepts an s-expression and compiles it into
+Python's function or lambda. Its signature is as follows:
+
+```python
+def compile_predicate(
+        sexp: List,
+        funcname: str = None,
+        force_func: bool = False,
+        force_lambda: bool = False) -> Union[FunctionType, LambdaType]
+```
+
+Above s-expression, for example, is compiled down to the following AST
+(excluding boilerplate `ast.Module`, `lineno` and `col_offset`):
 
 ```python
 FunctionDef(
@@ -61,7 +72,35 @@ FunctionDef(
 )
 ```
 
-Compiled function returns value of the predicate s-expression (e.g. `UnaryOp` as above), which, by the definition of a predicate, is always a boolean. Expressions are compiled to function (a not lambdas) to allow passing kwargs. This method of passing arguments should be always preferred when constructing more complex expressions. Allowable expressions are defined by the following grammar:
+Compiled function returns value of the predicate s-expression (e.g. `UnaryOp`
+as above), which, by the definition of a predicate, is always a truth value (I
+explicitly avoid here saying "boolean", as it may happen that the target
+function returns an object instead of `bool`. This is desired, however, as
+every object in Python *is* in fact a truth value. For example, a list in
+`is_not_empty = lambda array: array`
+
+By default, expressions with up to one argument are compiled to lambdas and
+everything else to functions. This is in order to allow passing arguments via
+kwargs. This method of passing arguments should be a preferred one when
+constructing complex expressions, as keeping track of the argument order
+quickly becomes cumbersome. Compilation to lambda and function can be forced
+with `force_lambda` and `force_function` options, respectively.
+
+As you can see in the above example, when no name is specified for the target
+function, random name is generated. Specifically, the name is generated using
+this expression: `'_%s' % uuid.uuid4().hex`. In case of lambdas, the name
+becomes a variable to which expression is assigned.
+
+Because only a handful of built-in types (such as `num`, `str` or `list`) have
+corresponding AST nodes, non-primitive types (e.g. user-defined classes) have
+to be compiled into an `ast.Name` node (name binding) with random name (same
+as above) and stored in target function's closure. Therefore, instances of
+classes such as `class Foo: pass` end up as free-variables. For more details
+see `eav.compiler.compile_terminal`.
+
+### Grammar
+
+Allowable expressions are defined by the following grammar:
 
 ```yaml
 rules:
@@ -119,8 +158,11 @@ rules:
     name:
         !regexpr '[a-zA-Z_][a-zA-Z0-9_]*'
 ```
-For a detailed explanation of the grammar notation check out <a href="https://github.com/IwoHerka/sexpr">**sexpr**  library documentation</a>. In practice, almost every valid Python expression can be translated to valid s-expression. This includes
-constructs such as `in`, callables and references:
+For a detailed explanation of the grammar notation check out
+<a href="https://github.com/IwoHerka/sexpr">**sexpr**  library documentation</a>.
+In practice, almost every valid expression in Python can be translated to
+valid s-expression. This includes constructs such as `in`, callables and
+references:
 
 ```python
 sexp = ['in', ['identifier', 'num', [1, 2, 3]]
@@ -139,5 +181,5 @@ func = compile_predicate(sexp)
 assert func(obj)
 assert not func(object())
  ```
- 
- For more examples, check out <a href="https://github.com/IwoHerka/booldog/blob/master/tests/examples.py">unit tests</a>.
+
+For more examples, check out <a href="https://github.com/IwoHerka/booldog/blob/master/tests/examples.py">unit tests</a>.
