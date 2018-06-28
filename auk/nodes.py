@@ -1,7 +1,15 @@
+"""
+    nodes
+    ~~~~~
+
+    Contains compilation function for each valid tag in the grammar. For
+    example, 'and' is compiled to `ast.BoolOp` with "op" equal to `ast.And()`.
+"""
 import ast
+from typing import Any
 
 
-def compile_comparison(first, second, opnode):
+def compile_comparison(first: Any, second: Any, opnode: ast.AST) -> ast.Compare:
     return ast.Compare(
         ops = [opnode()],
         left = first,

@@ -1,4 +1,4 @@
-'''
+"""
     compiler
     ~~~~~~~~
 
@@ -7,7 +7,7 @@
     The former takes an s-expression and compiles it into a function (or
     lambda). The latter is included as a convienience, as compiling a list of
     arguments for target function separetely is often handy.
-'''
+"""
 import ast
 import os
 import uuid
@@ -25,10 +25,10 @@ rules = grammar.yaml
 
 
 def read_argnames(sexp: List) -> Set[str]:
-    '''
+    """
     Builds expression's argument list. Traversal is performeed
     in a DFS manner.
-    '''
+    """
     names = set()
 
     if isinstance(sexp, list) and sexp and sexp[0] in grammar.top_tags:
@@ -42,12 +42,12 @@ def read_argnames(sexp: List) -> Set[str]:
 
 
 def compile_sexpr(sexp: List, closure: Optional[Dict] = None) -> ast.AST:
-    '''
+    """
     Compiles s-expression into AST expresssion. For a list
     of possible types, check out `auk.nodes` module.
 
     For explanation regarding `closure` see `compile_terminal`.
-    '''
+    """
     closure = closure or {}
     args = []
 
@@ -69,14 +69,14 @@ def compile_sexpr(sexp: List, closure: Optional[Dict] = None) -> ast.AST:
 
 
 def compile_terminal(sexp: List, closure: Dict) -> ast.AST:
-    '''
+    """
     Compiles primitive type variable (language built-in) to AST node.
 
     `closure` contains name bindings for target function.
     Variables of non-primitive (built-in) types (without corresponding
     AST node) are given a unique random name, converted to ast.Name
     and stored in closure for the target function.
-    '''
+    """
     if type(sexp) is bool:
         return ast.NameConstant(value = sexp), closure
 
@@ -127,9 +127,9 @@ def compile_terminal(sexp: List, closure: Dict) -> ast.AST:
 
 
 def define_func(name, args, body):
-    '''
+    """
     Construct AST function definition with specified name, args and body.
-    '''
+    """
     return ast.FunctionDef(
         name = name,
         args = args,
@@ -140,12 +140,12 @@ def define_func(name, args, body):
 
 
 def define_lambda(name, args, body):
-    '''
+    """
     Construct AST lambda assignment with specified name, args and body.
     Because lambdas are anonymous, we must assign them to some
     variable in order to reference them. This variable is returned
     to end-user.
-    '''
+    """
     return ast.Assign(
         targets = [
             ast.Name(
@@ -165,7 +165,7 @@ def compile_predicate(
         funcname: str = None,
         force_func: bool = False,
         force_lambda: bool = False) -> Union[FunctionType, LambdaType]:
-    '''
+    """
     Compiles s-expression into predicate function.
 
     S-expression is validated by the grammar (`predicate.yml`) and,
@@ -181,7 +181,7 @@ def compile_predicate(
 
     If compiling to function, `compile_predicate` can be provided with
     the name. If `funcname` is null, random UUID is generated.
-    '''
+    """
     if not grammar.matches(sexp):
         return None
 
