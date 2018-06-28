@@ -3,10 +3,11 @@
     ~~~~~~~~
 
     Core functionality of auk.
-    Public interface consists of `compile_predicate` and `read_argnames`.
-    The former takes an s-expression and compiles it into a function (or
-    lambda). The latter is included as a convienience, as compiling a list of
-    arguments for target function separetely is often handy.
+    Public interface consists of `compile_predicate` and 
+    `read_argnames`. The former takes an s-expression and compiles it 
+    into a function (or lambda). The latter is included as a 
+    convienience, as compiling a list of arguments for target function 
+    separetely is often handy.
 """
 import ast
 import os
@@ -26,8 +27,8 @@ rules = grammar.yaml
 
 def read_argnames(sexp: List) -> Set[str]:
     """
-    Builds expression's argument list. Traversal is performeed
-    in a DFS manner.
+    Builds expression's argument list. Traversal is performeed in a
+    DFS manner.
     """
     names = set()
 
@@ -43,8 +44,8 @@ def read_argnames(sexp: List) -> Set[str]:
 
 def compile_sexpr(sexp: List, closure: Optional[Dict] = None) -> ast.AST:
     """
-    Compiles s-expression into AST expresssion. For a list
-    of possible types, check out `auk.nodes` module.
+    Compiles s-expression into AST expresssion. For a list of possible
+    types, check out `auk.nodes` module.
 
     For explanation regarding `closure` see `compile_terminal`.
     """
@@ -72,10 +73,10 @@ def compile_terminal(sexp: List, closure: Dict) -> ast.AST:
     """
     Compiles primitive type variable (language built-in) to AST node.
 
-    `closure` contains name bindings for target function.
-    Variables of non-primitive (built-in) types (without corresponding
-    AST node) are given a unique random name, converted to ast.Name
-    and stored in closure for the target function.
+    `closure` contains name bindings for target function. Variables of
+    non-primitive (built-in) types (without corresponding AST node) 
+    are given a unique random name, converted to ast.Name and stored
+    in closure for the target function.
     """
     if type(sexp) is bool:
         return ast.NameConstant(value = sexp), closure
@@ -128,7 +129,8 @@ def compile_terminal(sexp: List, closure: Dict) -> ast.AST:
 
 def define_func(name, args, body):
     """
-    Construct AST function definition with specified name, args and body.
+    Construct AST function definition with specified name, args and 
+    body.
     """
     return ast.FunctionDef(
         name = name,
@@ -141,10 +143,10 @@ def define_func(name, args, body):
 
 def define_lambda(name, args, body):
     """
-    Construct AST lambda assignment with specified name, args and body.
-    Because lambdas are anonymous, we must assign them to some
-    variable in order to reference them. This variable is returned
-    to end-user.
+    Construct AST lambda assignment with specified name, args and 
+    body. Because lambdas are anonymous, we must assign them to some 
+    variable in order to reference them. This variable is returned to 
+    end-user.
     """
     return ast.Assign(
         targets = [

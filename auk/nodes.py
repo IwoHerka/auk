@@ -2,8 +2,9 @@
     nodes
     ~~~~~
 
-    Contains compilation function for each valid tag in the grammar. For
-    example, 'and' is compiled to `ast.BoolOp` with "op" equal to `ast.And()`.
+    Contains compilation function for each valid tag in the grammar.
+    For example, 'and' is compiled to `ast.BoolOp` with "op" equal to 
+    `ast.And()`.
 """
 import ast
 from typing import Any
