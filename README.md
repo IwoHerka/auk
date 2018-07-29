@@ -10,6 +10,8 @@
 predicate functions.
 
 ```python
+P, Q = True, False
+
 sexp = \
     ['not',
         ['or',
