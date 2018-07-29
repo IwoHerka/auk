@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name             = 'auk',
-    version          = '0.1.0',
+    version          = '0.1.1',
     license          = 'MIT',
     requires         = ['python (>= 3.4)'],
     provides         = ['auk'],
